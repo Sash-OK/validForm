@@ -7,21 +7,18 @@ jQuery.fn.extend({
 
     validForm: function (options) {
 
-        /* options default */
         var options = $.extend({
-            classNok: false, /* CSS класс для полей с ошибкой */
-            classOk: false, /* CSS класс для полей без ошибки */
+            classNok: false,
+            classOk: false,
             required: [{
-                /* Массив с полями формы, которые надо проверять */
-                selector: '[name=name]', /* Указываем какое поле нужно проверять */
-                fieldParentClass: false, /* Селектор для стилизации поля с ошибкой */
-                pattern: /^.+$/, /* Регулярное выражение для проверки поля */
-                errorMessage: false, /* Текст сообщения об ошибке */
-                errorTagName: false, /* Тег для текста об ошибке */
-                errorClassName: false, /* Класс тега с сообщением об ошибке */
-                errorContainer: false, /* Элемент в который будет вставлена ошибка */
-                customFunc: function () {
-                } /* Нужно ли проверять поле (можно указать функцию) */
+                selector: '[name=name]',
+                fieldParentClass: false,
+                pattern: /^.+$/,
+                errorMessage: false,
+                errorTagName: false,
+                errorClassName: false,
+                errorContainer: false,
+                customFunc: function () {}
             }],
 
             onSuccess: function (form) {
@@ -33,18 +30,14 @@ jQuery.fn.extend({
             }
         }, options);
 
-        /* Проверяем нужно ли создавать сообщение об ошибке */
         function errorFields(config, $form) {
 
-            /* Создаем перемменную с ID ошибки - err_ + номер элемента в массиве */
             var errClass = 'error-' + $.inArray(config, options.required);
 
-            /* Если ошибка уже есть показываем её */
             if ($form.find('.' + errClass).length) {
                 $form.find('.' + errClass).fadeIn(500);
             } else {
 
-                /* Создаем тег и вставляем в него сообщение об ошибке */
                 var $errorTag = $('<' + config.errorTagName + '></' + config.errorTagName + '>')
                     .css('display', 'none')
                     .addClass(errClass)
@@ -60,7 +53,6 @@ jQuery.fn.extend({
             }
         }
 
-        /* Проверяем заполнение обязательных полей */
         function checkField($input, config) {
 
             var $form = $input.parents('form'),
@@ -69,10 +61,8 @@ jQuery.fn.extend({
 
             if (validValue || func) {
 
-                /* Создаем перемменную с ID ошибки - err_ + номер элемента в массиве */
                 var errClass = '.error-' + $.inArray(config, options.required);
 
-                /* Ошибки нет, то удаляем у поля класс - classNok и добавляем класс - classОk*/
                 if (config.fieldParentClass) {
                     $input.parents(config.fieldParentClass)
                         .removeClass(options.classNok || '')
@@ -82,12 +72,11 @@ jQuery.fn.extend({
                         .addClass(options.classOk || '');
                 }
 
-                /* Удаляем тег с ошибкой */
                 $form.find(errClass).fadeOut(500);
 
                 return false;
             } else {
-                /* Ошибка есть, то удаляем у поля класс - classOk и добавляем класс - classNok*/
+
                 if (config.fieldParentClass) {
 
                     $input.parents(config.fieldParentClass)
@@ -100,7 +89,6 @@ jQuery.fn.extend({
                         .addClass(options.classNok || '');
                 }
 
-                /* Создаем тег с сообщением об ошибке, если он задан при инициализации */
                 if (config.errorTagName && config.errorMessage) {
                     errorFields(config, $form);
                 }
@@ -136,7 +124,6 @@ jQuery.fn.extend({
                 }
             });
 
-            /* Вешаем событие снятия фокуса на каждое поле */
             options.required.forEach(function (item) {
                 $form.find(item.selector).on('change', function () {
                     checkField($(this), item);
