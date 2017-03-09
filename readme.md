@@ -1,6 +1,6 @@
 # validForm
  
- [Demo page](https://sash-ok.github.io/validForm/index.html)
+ [Demo page](https://sash-ok.github.io/validForm/)
 
 ## Подключение
 
